@@ -377,41 +377,4 @@ Achievements
         req:all achievements
         icon:icons[2,4] icons[0,7]
 
-Events
-    *harvestFestival
-        name:Harvest Festival
-        desc:It's harvest time! Llamas sell for double the price!
-        duration:48 hours
-        effect:sell price of llamas x2
-        icon:stuff/festival.png
-        start:1/10
-        end:3/10
-
-    *winterPrep
-        name:Winter Preparation
-        desc:Prepare for winter! Hay production is doubled!
-        duration:72 hours
-        effect:hay production x2
-        icon:stuff/winter.png
-        start:1/12
-        end:4/12
-
-    *springBloom
-        name:Spring Bloom
-        desc:Spring is here! Llama birth rate is doubled!
-        duration:72 hours
-        effect:llama birth rate x2
-        icon:stuff/spring.png
-        start:1/4
-        end:4/4
-
-    *summerFair
-        name:Summer Fair
-        desc:It's fair time! Increased chance of finding Golden Llamas!
-        duration:48 hours
-        effect:golden llama chance x2
-        icon:stuff/summer.png
-        start:1/7
-        end:3/7
-
 // End of file
