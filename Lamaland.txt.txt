@@ -1,0 +1,417 @@
+Let's make a game!
+    name:Llama Land: The Old-Timey Farm
+    by: Turtle
+    desc:Welcome to Llama Land! Raise llamas, watch them grow, and sell them for profit in this charming old-timey farm idle game.<//>Can you become the ultimate llama farmer?
+    created:12-12-2023
+    updated:12-12-2023
+    version:1
+
+Settings
+    background:stuff/farm.jpg
+    building cost increase:115%
+    building cost refund:50%
+    spritesheet:icons, 48 by 48, stuff/llamaIcons.png
+    stylesheet:stuff/rustic.css
+
+Layout
+    use default
+
+Buttons
+    *llamaButton
+        name:Feed a llama
+        desc:Click to feed your llamas and make them grow faster!
+        on click:anim icon wobble
+        on click:yield 1 hay
+        icon:stuff/llama.png
+        no text
+        class:bigButton hasFlares
+        icon class:shadowed
+        tooltip origin:bottom
+        tooltip class:green
+
+Resources
+    *llama|llamas
+        name:Llama|Llamas
+        desc:These are your llamas. The older they get, the more valuable they become!
+        icon:icons[0,0]
+        class:noBackground
+        show earned
+
+    *hay
+        name:Hay
+        desc:Feed this to your llamas to make them grow faster.
+        icon:icons[0,1]
+        class:noBackground
+        hidden when 0
+
+    *coin|coins
+        name:Coin|Coins
+        desc:Earn these by selling your grown llamas.
+        icon:icons[0,2]
+        class:noBackground
+        hidden when 0
+
+Shinies
+    *luckyLlama
+        on click:log Yeehaw
+        movement:onRight moveLeft fade bounce:0.05
+        frequency:45
+        frequency variation:20
+        icon:stuff/luckyLlama.png
+        class:bigButton
+        on click:
+            $boost=1
+            if (have luckyHay) $boost=3
+            if (chance(20%))
+                $amount=max(5,random(llamas:ps*60*1,llamas:ps*60*2))*$boost
+                toast The lucky llama grants you<//><b>[$amount] hay</b>.
+                yield $amount hay
+            else
+                $amount=10*$boost
+                toast The lucky llama grants you<//><b>[$amount] coins</b>!
+                yield $amount coins
+            end
+        end
+
+Buildings
+    *TEMPLATE
+        on click:anim glow
+
+    *barn|barns
+        name:Llama Barn|Llama Barns
+        desc:A cozy shelter for your llamas.<//><b>Effect:</b><.>Produces 1 llama every 15 seconds.
+        icon:icons[3,0]
+        cost:10 hay
+        on tick:yield 0.066 llama
+        unlocked
+
+    *field|fields
+        name:Llama Field|Llama Fields
+        desc:An open space for llamas to graze and grow.<//><b>Effect:</b><.>Produces 1 llama every 5 seconds.
+        icon:icons[3,1]
+        cost:50 hay
+        on tick:yield 0.2 llamas
+        req:50 hay:earned
+
+    *farm|farms
+        name:Llama Farm|Llama Farms
+        desc:A large area dedicated to raising multiple llamas.<//><b>Effect:</b><.>Produces 5 llamas per second.
+        icon:icons[3,2]
+        cost:300 hay
+        on tick:yield 5 llamas
+        req:300 hay:earned
+
+    *ranch|ranches
+        name:Llama Ranch|Llama Ranches
+        desc:An expansive ranch with excellent care for llamas.<//><b>Effect:</b><.>Produces 20 llamas per second.
+        icon:icons[3,3]
+        cost:2000 hay
+        on tick:yield 20 llamas
+        req:2000 hay:earned
+
+    *estate|estates
+        name:Llama Estate|Llama Estates
+        desc:A luxurious estate for the finest llamas.<//><b>Effect:</b><.>Produces 100 llamas per second.
+        icon:icons[3,4]
+        cost:10000 hay
+        on tick:yield 100 llamas
+        req:10000 hay:earned
+
+    *sanctuary|sanctuaries
+        name:Llama Sanctuary|Llama Sanctuaries
+        desc:A paradise for llamas, ensuring their best growth and happiness.<//><b>Effect:</b><.>Produces 500 llamas per second.
+        icon:icons[3,5]
+        cost:50000 hay
+        on tick:yield 500 llamas
+        req:50000 hay:earned
+
+    *wonderland|wonderlands
+        name:Llama Wonderland|Llama Wonderlands
+        desc:The ultimate haven for llamas, unmatched in luxury and care.<//><b>Effect:</b><.>Produces 2000 llamas per second.
+        icon:icons[3,6]
+        cost:250000 hay
+        on tick:yield 2000 llamas
+        req:250000 hay:earned
+
+    *utopia|utopias
+        name:Llama Utopia|Llama Utopias
+        desc:A legendary place where llamas thrive in perfect harmony.<//><b>Effect:</b><.>Produces 10000 llamas per second.
+        icon:icons[3,7]
+        cost:1000000 hay
+        on tick:yield 10000 llamas
+        req:1000000 hay:earned
+
+    *eldorado
+        name:Eldorado
+        text:Eldorado ([this]%)
+        desc:The mythical city of gold, dedicated to llamas.<//><b>Eldorado is [this]% complete.</b>
+        icon:icons[3,8]
+        cost:50000000 hay, 1000 coins
+        req:1000000 hay:earned
+        limit:100
+        cost increase:105%
+
+Upgrades
+    *TEMPLATE
+        on click:anim glow
+
+    //food upgrades
+
+    *betterHay
+        name:Better Hay
+        desc:More nutritious hay for faster llama growth.<//><b>Effect:</b><.>+1 hay/click
+        icon:icons[1,1]
+        cost:100 hay
+        passive:increase hay yield of llamaButton by 1
+        req:10 hay:earned
+
+    *alfalfa
+        name:Alfalfa
+        desc:Delicious and rich in nutrients.<//><b>Effect:</b><.>+1 hay/click
+        icon:icons[1,2]
+        cost:500 hay
+        passive:increase hay yield of llamaButton by 1
+        req:100 hay:earned
+
+    *oats
+        name:Oats
+        desc:Hearty grains for strong llamas.<//><b>Effect:</b><.>hay/click x2<.>llama production +5%
+        icon:icons[1,3]
+        cost:2000 hay
+        passive:multiply hay yield of llamaButton by 2
+        passive:multiply yield of llamas by 1.05
+        req:500 hay:earned
+
+    //building upgrades
+
+    *comfyBarn
+        name:Comfy Barn
+        desc:Make your barns extra cozy for the llamas.<//><b>Effect:</b><.>llama barn production x2
+        icon:icons[2,0] icons[3,0]
+        cost:1000 hay
+        passive:multiply yield of barn by 2
+        req:10 barns
+
+    *greenPasture
+        name:Green Pasture
+        desc:Lush and nutritious grass for your fields.<//><b>Effect:</b><.>llama field production x2
+        icon:icons[2,0] icons[3,1]
+        cost:5000 hay
+        passive:multiply yield of field by 2
+        req:10 fields
+
+    *ranchUpgrade
+        name:Ranch Upgrade
+        desc:State-of-the-art facilities for your ranches.<//><b>Effect:</b><.>llama ranch production x2
+        icon:icons[2,0] icons[3,3]
+        cost:20000 hay
+        passive:multiply yield of ranch by 2
+        req:10 ranches
+
+    *estateLuxuries
+        name:Estate Luxuries
+        desc:Only the best for your llamas.<//><b>Effect:</b><.>llama estate production x2
+        icon:icons[2,0] icons[3,4]
+        cost:50000 hay
+        passive:multiply yield of estate by 2
+        req:10 estates
+
+    *sanctuaryBliss
+        name:Sanctuary Bliss
+        desc:Turn your sanctuaries into a llama paradise.<//><b>Effect:</b><.>llama sanctuary production x2
+        icon:icons[2,0] icons[3,5]
+        cost:100000 hay
+        passive:multiply yield of sanctuary by 2
+        req:10 sanctuaries
+
+    *wonderlandMagic
+        name:Wonderland Magic
+        desc:Magical enhancements for your wonderlands.<//><b>Effect:</b><.>llama wonderland production x2
+        icon:icons[2,0] icons[3,6]
+        cost:500000 hay
+        passive:multiply yield of wonderland by 2
+        req:10 wonderlands
+
+    *utopiaDream
+        name:Utopia Dream
+        desc:Make your utopias the epitome of llama living.<//><b>Effect:</b><.>llama utopia production x2
+        icon:icons[2,0] icons[3,7]
+        cost:1000000 hay
+        passive:multiply yield of utopia by 2
+        req:10 utopias
+
+    *goldenLlama
+        name:Golden Llama
+        desc:Rare and mystical llamas that bring fortune.<//><b>Effect:</b><.>1% chance of gaining 10 coins per llama click
+        icon:icons[2,1]
+        cost:100 coins
+        req:100 coins:earned
+
+Achievements
+    *TEMPLATE
+        on click:anim glow
+
+    *firstLlama
+        name:First Llama
+        desc:Have <b>1</b> llama.
+        req:1 llama
+        icon:icons[2,4] icons[0,2] icons[0,6]
+
+    *llamaFarmer
+        name:Llama Farmer
+        desc:Have <b>100</b> llamas.
+        req:100 llamas
+        icon:icons[2,4] icons[0,3] icons[0,6]
+
+    *llamaTycoon
+        name:Llama Tycoon
+        desc:Have <b>10000</b> llamas.
+        req:10000 llamas
+        icon:icons[2,4] icons[0,4] icons[0,6]
+
+    *clickAchiev1
+        name:Feeding Frenzy
+        desc:Feed the llamas <b>100</b> times.
+        req:100 llamaButton clicks
+        icon:icons[2,2] icons[0,2] icons[0,6]
+
+    *clickAchiev2
+        name:Haymaker
+        desc:Feed the llamas <b>1000</b> times.
+        req:1000 llamaButton clicks
+        icon:icons[2,2] icons[0,3] icons[0,6]
+
+    *clickAchiev3
+        name:Llama Whisperer
+        desc:Feed the llamas <b>10000</b> times.
+        req:10000 llamaButton clicks
+        icon:icons[2,2] icons[0,4] icons[0,6]
+
+    *llamaPsAchiev1
+        name:Growing Herd
+        desc:Produce <b>10</b> llamas per second.
+        req:10 llamas per second
+        icon:icons[2,3] icons[0,2] icons[0,6]
+
+    *llamaPsAchiev2
+        name:Llama Empire
+        desc:Produce <b>1000</b> llamas per second.
+        req:1000 llamas per second
+        icon:icons[2,3] icons[0,3] icons[0,6]
+
+    *llamaPsAchiev3
+        name:Llama Utopia
+        desc:Produce <b>100000</b> llamas per second.
+        req:100000 llamas per second
+        icon:icons[2,3] icons[0,4] icons[0,6]
+
+    *coinAchiev1
+        name:First Sale
+        desc:Earn <b>100</b> coins.
+        req:100 coins
+        icon:icons[0,2] icons[0,2]
+
+    *coinAchiev2
+        name:Wealthy Farmer
+        desc:Earn <b>10000</b> coins.
+        req:10000 coins
+        icon:icons[0,2] icons[0,3]
+
+    *coinAchiev3
+        name:Llama Magnate
+        desc:Earn <b>1000000</b> coins.
+        req:1000000 coins
+        icon:icons[0,2] icons[0,4]
+
+ *eldoradoAchiev
+        name:Eldorado Builder
+        desc:Complete building <b>Eldorado</b>.<//>The pinnacle of llama luxury!
+        req:100 eldorado
+        icon:icons[3,8] icons[0,4]
+
+    *hayAchiev1
+        name:Haystack
+        desc:Have <b>1000</b> hay.
+        req:1000 hay
+        icon:icons[1,1] icons[0,2]
+
+    *hayAchiev2
+        name:Hay Baron
+        desc:Have <b>100000</b> hay.
+        req:100000 hay
+        icon:icons[1,1] icons[0,3]
+
+    *hayAchiev3
+        name:Hay Tycoon
+        desc:Have <b>10000000</b> hay.
+        req:10000000 hay
+        icon:icons[1,1] icons[0,4]
+
+    *coinAchiev4
+        name:Millionaire Farmer
+        desc:Earn <b>10000000</b> coins.
+        req:10000000 coins
+        icon:icons[0,2] icons[0,5]
+
+    *goldenLlamaAchiev
+        name:Golden Llama
+        desc:Click the llama <b>10000</b> times with the Golden Llama upgrade.
+        req:10000 llamaButton clicks with goldenLlama
+        icon:icons[2,1] icons[0,5]
+
+    *allUpgrades
+        name:Fully Upgraded
+        desc:Purchase all the upgrades.
+        req:all upgrades
+        icon:icons[2,0] icons[0,6]
+
+    *allBuildings
+        name:Real Estate Mogul
+        desc:Own every type of building.
+        req:all buildings
+        icon:icons[3,0] icons[0,6]
+
+    *allAchievements
+        name:Ultimate Llama Farmer
+        desc:Unlock all achievements.
+        req:all achievements
+        icon:icons[2,4] icons[0,7]
+
+Events
+    *harvestFestival
+        name:Harvest Festival
+        desc:It's harvest time! Llamas sell for double the price!
+        duration:48 hours
+        effect:sell price of llamas x2
+        icon:stuff/festival.png
+        start:1/10
+        end:3/10
+
+    *winterPrep
+        name:Winter Preparation
+        desc:Prepare for winter! Hay production is doubled!
+        duration:72 hours
+        effect:hay production x2
+        icon:stuff/winter.png
+        start:1/12
+        end:4/12
+
+    *springBloom
+        name:Spring Bloom
+        desc:Spring is here! Llama birth rate is doubled!
+        duration:72 hours
+        effect:llama birth rate x2
+        icon:stuff/spring.png
+        start:1/4
+        end:4/4
+
+    *summerFair
+        name:Summer Fair
+        desc:It's fair time! Increased chance of finding Golden Llamas!
+        duration:48 hours
+        effect:golden llama chance x2
+        icon:stuff/summer.png
+        start:1/7
+        end:3/7
+
+// End of file
